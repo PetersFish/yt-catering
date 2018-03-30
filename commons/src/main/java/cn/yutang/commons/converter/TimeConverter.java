@@ -12,10 +12,8 @@ public class TimeConverter implements Converter<String, Date> {
 	@Override
 	public Date convert(String s) {
 		try {
-			if(s != null && !"".equals(s)){
-				Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(s);
-				return date;
-			}
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(s);
+			return date;
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

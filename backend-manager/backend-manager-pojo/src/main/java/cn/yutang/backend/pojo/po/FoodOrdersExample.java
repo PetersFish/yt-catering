@@ -2,6 +2,7 @@ package cn.yutang.backend.pojo.po;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class FoodOrdersExample {
@@ -195,6 +196,32 @@ public class FoodOrdersExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
+        }
+
         public Criteria andOrIdIsNull() {
             addCriterion("or_id is null");
             return (Criteria) this;
@@ -275,52 +302,52 @@ public class FoodOrdersExample {
             return (Criteria) this;
         }
 
-        public Criteria andTbIdEqualTo(Long value) {
+        public Criteria andTbIdEqualTo(Integer value) {
             addCriterion("tb_id =", value, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdNotEqualTo(Long value) {
+        public Criteria andTbIdNotEqualTo(Integer value) {
             addCriterion("tb_id <>", value, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdGreaterThan(Long value) {
+        public Criteria andTbIdGreaterThan(Integer value) {
             addCriterion("tb_id >", value, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andTbIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("tb_id >=", value, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdLessThan(Long value) {
+        public Criteria andTbIdLessThan(Integer value) {
             addCriterion("tb_id <", value, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdLessThanOrEqualTo(Long value) {
+        public Criteria andTbIdLessThanOrEqualTo(Integer value) {
             addCriterion("tb_id <=", value, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdIn(List<Long> values) {
+        public Criteria andTbIdIn(List<Integer> values) {
             addCriterion("tb_id in", values, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdNotIn(List<Long> values) {
+        public Criteria andTbIdNotIn(List<Integer> values) {
             addCriterion("tb_id not in", values, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdBetween(Long value1, Long value2) {
+        public Criteria andTbIdBetween(Integer value1, Integer value2) {
             addCriterion("tb_id between", value1, value2, "tbId");
             return (Criteria) this;
         }
 
-        public Criteria andTbIdNotBetween(Long value1, Long value2) {
+        public Criteria andTbIdNotBetween(Integer value1, Integer value2) {
             addCriterion("tb_id not between", value1, value2, "tbId");
             return (Criteria) this;
         }
@@ -336,52 +363,52 @@ public class FoodOrdersExample {
         }
 
         public Criteria andOrBegintimeEqualTo(Date value) {
-            addCriterion("or_beginTime =", value, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime =", value, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeNotEqualTo(Date value) {
-            addCriterion("or_beginTime <>", value, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime <>", value, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeGreaterThan(Date value) {
-            addCriterion("or_beginTime >", value, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime >", value, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("or_beginTime >=", value, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime >=", value, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeLessThan(Date value) {
-            addCriterion("or_beginTime <", value, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime <", value, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeLessThanOrEqualTo(Date value) {
-            addCriterion("or_beginTime <=", value, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime <=", value, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeIn(List<Date> values) {
-            addCriterion("or_beginTime in", values, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime in", values, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeNotIn(List<Date> values) {
-            addCriterion("or_beginTime not in", values, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime not in", values, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeBetween(Date value1, Date value2) {
-            addCriterion("or_beginTime between", value1, value2, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime between", value1, value2, "orBegintime");
             return (Criteria) this;
         }
 
         public Criteria andOrBegintimeNotBetween(Date value1, Date value2) {
-            addCriterion("or_beginTime not between", value1, value2, "orBegintime");
+            addCriterionForJDBCDate("or_beginTime not between", value1, value2, "orBegintime");
             return (Criteria) this;
         }
 
@@ -396,52 +423,52 @@ public class FoodOrdersExample {
         }
 
         public Criteria andOrEndtimeEqualTo(Date value) {
-            addCriterion("or_endTime =", value, "orEndtime");
+            addCriterionForJDBCDate("or_endTime =", value, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeNotEqualTo(Date value) {
-            addCriterion("or_endTime <>", value, "orEndtime");
+            addCriterionForJDBCDate("or_endTime <>", value, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeGreaterThan(Date value) {
-            addCriterion("or_endTime >", value, "orEndtime");
+            addCriterionForJDBCDate("or_endTime >", value, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("or_endTime >=", value, "orEndtime");
+            addCriterionForJDBCDate("or_endTime >=", value, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeLessThan(Date value) {
-            addCriterion("or_endTime <", value, "orEndtime");
+            addCriterionForJDBCDate("or_endTime <", value, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeLessThanOrEqualTo(Date value) {
-            addCriterion("or_endTime <=", value, "orEndtime");
+            addCriterionForJDBCDate("or_endTime <=", value, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeIn(List<Date> values) {
-            addCriterion("or_endTime in", values, "orEndtime");
+            addCriterionForJDBCDate("or_endTime in", values, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeNotIn(List<Date> values) {
-            addCriterion("or_endTime not in", values, "orEndtime");
+            addCriterionForJDBCDate("or_endTime not in", values, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeBetween(Date value1, Date value2) {
-            addCriterion("or_endTime between", value1, value2, "orEndtime");
+            addCriterionForJDBCDate("or_endTime between", value1, value2, "orEndtime");
             return (Criteria) this;
         }
 
         public Criteria andOrEndtimeNotBetween(Date value1, Date value2) {
-            addCriterion("or_endTime not between", value1, value2, "orEndtime");
+            addCriterionForJDBCDate("or_endTime not between", value1, value2, "orEndtime");
             return (Criteria) this;
         }
 
@@ -565,66 +592,6 @@ public class FoodOrdersExample {
             return (Criteria) this;
         }
 
-        public Criteria andCtIdIsNull() {
-            addCriterion("ct_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdIsNotNull() {
-            addCriterion("ct_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdEqualTo(Integer value) {
-            addCriterion("ct_id =", value, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdNotEqualTo(Integer value) {
-            addCriterion("ct_id <>", value, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdGreaterThan(Integer value) {
-            addCriterion("ct_id >", value, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("ct_id >=", value, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdLessThan(Integer value) {
-            addCriterion("ct_id <", value, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdLessThanOrEqualTo(Integer value) {
-            addCriterion("ct_id <=", value, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdIn(List<Integer> values) {
-            addCriterion("ct_id in", values, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdNotIn(List<Integer> values) {
-            addCriterion("ct_id not in", values, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdBetween(Integer value1, Integer value2) {
-            addCriterion("ct_id between", value1, value2, "ctId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCtIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("ct_id not between", value1, value2, "ctId");
-            return (Criteria) this;
-        }
-
         public Criteria andShopIdIsNull() {
             addCriterion("shop_id is null");
             return (Criteria) this;
@@ -682,66 +649,6 @@ public class FoodOrdersExample {
 
         public Criteria andShopIdNotBetween(Integer value1, Integer value2) {
             addCriterion("shop_id not between", value1, value2, "shopId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountIsNull() {
-            addCriterion("or_pcount is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountIsNotNull() {
-            addCriterion("or_pcount is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountEqualTo(Integer value) {
-            addCriterion("or_pcount =", value, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountNotEqualTo(Integer value) {
-            addCriterion("or_pcount <>", value, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountGreaterThan(Integer value) {
-            addCriterion("or_pcount >", value, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountGreaterThanOrEqualTo(Integer value) {
-            addCriterion("or_pcount >=", value, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountLessThan(Integer value) {
-            addCriterion("or_pcount <", value, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountLessThanOrEqualTo(Integer value) {
-            addCriterion("or_pcount <=", value, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountIn(List<Integer> values) {
-            addCriterion("or_pcount in", values, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountNotIn(List<Integer> values) {
-            addCriterion("or_pcount not in", values, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountBetween(Integer value1, Integer value2) {
-            addCriterion("or_pcount between", value1, value2, "orPcount");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrPcountNotBetween(Integer value1, Integer value2) {
-            addCriterion("or_pcount not between", value1, value2, "orPcount");
             return (Criteria) this;
         }
     }
