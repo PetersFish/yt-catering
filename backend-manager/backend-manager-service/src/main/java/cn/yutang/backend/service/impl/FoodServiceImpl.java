@@ -24,4 +24,34 @@ public class FoodServiceImpl implements IFoodService {
 	public Integer countTotal(Food food) {
 		return foodCustomMapper.countTotal(food);
 	}
+
+	@Override
+	public Integer setFoodByIdSelective(Food food) {
+		return foodCustomMapper.updateByPrimaryKeySelective(food);
+	}
+
+	@Override
+	public Integer setFoodById(Food food) {
+		return foodCustomMapper.updateByPrimaryKey(food);
+	}
+
+	@Override
+	public Integer deleteFoods(List<Long> ids) {
+		return foodCustomMapper.deleteByIds(ids);
+	}
+
+	@Override
+	public Integer setRecommendByIds(List<Long> ids) {
+		return foodCustomMapper.setRecommendByIds(ids);
+	}
+
+	@Override
+	public Integer setFoodStatusByIds(List<Long> ids, Food food) {
+		return foodCustomMapper.updateByPrimaryKeysSelective(ids,food);
+	}
+
+	@Override
+	public Integer addFood(Food food) {
+		return foodCustomMapper.insertSelective(food);
+	}
 }

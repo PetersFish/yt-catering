@@ -3,13 +3,17 @@ package cn.yutang.backend.controller;
 import cn.yutang.backend.pojo.dto.MessageResult;
 import cn.yutang.backend.pojo.dto.Page;
 import cn.yutang.backend.pojo.po.DinnerTable;
+import cn.yutang.backend.pojo.po.Shop;
+import cn.yutang.backend.pojo.util.QrFtpUtils;
 import cn.yutang.backend.pojo.vo.DinnerTableCustom;
 import cn.yutang.backend.pojo.vo.LikeQuery;
 import cn.yutang.backend.service.DinnerTableService;
-import cn.yutang.backend.pojo.util.QrFtpUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,8 +27,12 @@ public class BackendDinnerTableController {
 
     @ResponseBody
     @RequestMapping(value = "/dinnerTable",method = RequestMethod.GET)
-    public MessageResult<DinnerTableCustom> listDinnerTableToJson(Page page, LikeQuery query) {
+    public MessageResult<DinnerTableCustom> listDinnerTableToJson(HttpSession session, Page page, LikeQuery query) {
 
+        Shop sessionShop= (Shop) session.getAttribute("sessionShop");
+        if(sessionShop!=null){
+            query.setShopId(sessionShop.getShopId());
+        }
         //从后台把所有商品的数据查询到List，把List封装MessageResult
         MessageResult<DinnerTableCustom> messageResult = new MessageResult<DinnerTableCustom>();
         try {
@@ -98,6 +106,7 @@ public class BackendDinnerTableController {
         }
         return i.toString();
     }
+
     /*
 	 * 转到待更新指定餐桌页面
 	 */
@@ -105,12 +114,14 @@ public class BackendDinnerTableController {
     public String toEditDinnerTable(HttpServletRequest request, HttpSession session) throws IOException {
        Long tbId= Long.valueOf(request.getParameter("tbId"));
 
-       DinnerTable updateDinnerTable=dinnerTableService.findDinnerTableByTbId(tbId);
+        String realPath = request.getServletContext().getRealPath("/static/attachments/")+"/";
+
+        DinnerTable updateDinnerTable=dinnerTableService.findDinnerTableByTbId(tbId);
         if(updateDinnerTable!=null){
             if(updateDinnerTable.getTbQrcode()!=null){
             }else{
-                String filename=QrFtpUpload.qrFtpUpload(updateDinnerTable);
-                String path="http://106.15.95.200/images/"+filename;
+                String filename= QrFtpUtils.qrFtpUpload(updateDinnerTable,realPath);
+                String path="http://www.yummm.cn/img/"+filename;
                 updateDinnerTable.setTbQrcode(path);
                 dinnerTableService.updateDinnerTable(updateDinnerTable);
             }
@@ -124,4 +135,15 @@ public class BackendDinnerTableController {
         dinnerTableService.updateDinnerTable(dinnertable);
         return "0";
     }
+    @ResponseBody
+    @RequestMapping(value = "/qrcodeImgDownload")
+    public String qrcodeImgDownload(DinnerTable dinnertable){
+        /*Boolean result= QrFtpUtils.qrFtpDownload(dinnertable);
+        if(result){
+            return "0";
+        }else {
+        }*/
+        return "0";
+    }
+
 }
