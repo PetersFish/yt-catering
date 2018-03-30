@@ -9,6 +9,4 @@ public interface IShopService {
 
 	//验证Shop是否存在
 	List<Shop> verifyShop(Shop shop);
-
-    Shop searchShopByShopTel(String phoneNumber);
 }

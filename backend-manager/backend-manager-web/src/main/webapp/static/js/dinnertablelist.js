@@ -20,9 +20,9 @@ layui.use(['form','table', 'jquery', 'admin'], function () {
             }, {
                 field: 'tbName', title: '餐桌名称', sort: true
             },  {
-                field: 'ttName', title: '餐桌类型', sort: true
+                field: 'ttName', title: '餐桌类型'
             },  {
-                field: 'tbStatus', title: '餐桌状态', templet:'#shelfTpl', sort: true
+                field: 'tbStatus', title: '餐桌状态', templet:'#shelfTpl'
             },{
                 field: 'shopName', title: '所属商家'
             }, {
@@ -38,10 +38,9 @@ layui.use(['form','table', 'jquery', 'admin'], function () {
     var active = {
         reload:function(){
            var keyWord=$.trim($('#keyWord').val());
-            var shopId=$('#shopId').val();
            table.reload('dinnertableList',{
                page:{curr:1},
-               where:{keyWord:keyWord,shopId:shopId}
+               where:{keyWord:keyWord}
            });
         },
         getCheckData: function () { //获取选中数据

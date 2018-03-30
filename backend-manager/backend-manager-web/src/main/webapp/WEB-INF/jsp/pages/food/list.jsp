@@ -1,10 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
-<style type="text/css">
-</style>
+
 <head>
     <meta charset="UTF-8">
     <title>文章列表-后台管理系统-Admin 1.0</title>
@@ -20,7 +18,7 @@
     <script src="${pageContext.request.contextPath}/static/js/food/list.js" type="text/javascript"
             charset="utf-8"></script>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/admin-p.js"></script>
+    <!--<script type="text/javascript" src="../../static/js/admin.js"></script>-->
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -60,7 +58,7 @@
                     <form class="layui-form layui-col-md12 we-search">
                         <label class="layui-form-label">菜品搜索：</label>
                         <div class="layui-input-inline">
-                            <select name="ftId" id="ftId">
+                            <select name="cateid">
                                 <option value="">请选择分类</option>
                                 <c:forEach items="${foodtypeList}" var="ft">
                                     <option value="${ft.ftId}">${ft.ftName}</option>
@@ -68,83 +66,71 @@
                             </select>
                         </div>
                         <div class="layui-inline">
-                            <input type="text" name="fdName" placeholder="请输入菜品关键字" autocomplete="off"
+                            <input type="text" name="keyword" placeholder="请输入菜品关键字" autocomplete="off"
                                    class="layui-input">
-                            <input type="hidden" name="shopId" value="${sessionShop.shopId}">
                         </div>
-                        <button class="layui-btn" lay-submit lay-filter="search"><i
+                        <button class="layui-btn" lay-submit lay-filter="sreach"><i
                                 class="layui-icon">&#xe615;</i></button>
                     </form>
                 </div>
                 <div class="weadmin-block demoTable">
-                    <button class="layui-btn layui-btn-danger" data-type="getCheckData">
-                        <i class="layui-icon">&#xe640;</i>批量删除
+                    <button class="layui-btn layui-btn-danger" data-type="getCheckData"><i class="layui-icon">&#xe640;</i>批量删除
                     </button>
-                    <button class="layui-btn" onclick="setRecommend('setStatus.do',1,'设置成功')">
-                        <i class="layui-icon">&#xe6c6;</i>推荐
+                    <button class="layui-btn" data-type="Recommend"><i class="layui-icon">&#xe6c6;</i>推荐
                     </button>
-                    <button class="layui-btn" onclick="setRecommend('setStatus.do',-1,'设置成功')">
-                        <i class="layui-icon">&#xe6c5;</i>普通
+                    <button class="layui-btn" data-type="Top"><i class="layui-icon">&#xe619;</i>置顶</button>
+                    <button class="layui-btn" data-type="Review"><i class="layui-icon">&#xe6b2;</i>审核</button>
+                    <button class="layui-btn" onclick="WeAdminShow('添加用户','./add',600,400)"><i
+                            class="layui-icon">&#xe61f;</i>添加
                     </button>
-                    <button class="layui-btn" onclick="setStatus('setStatus.do',1,'菜品已上架')">
-                        <i class="layui-icon">&#xe619;</i>上架
-                    </button>
-                    <button class="layui-btn" onclick="setStatus('setStatus.do',-1,'菜品已下架')">
-                        <i class="layui-icon">&#xe61a;</i>下架
-                    </button>
-                    <button class="layui-btn" onclick="WeAdminShow('添加用户','./add',600,400)">
-                        <i class="layui-icon">&#xe61f;</i>添加
-                    </button>
-                    <span class="fr" style="line-height:40px">共有数据：${count} 条</span>
+                    <span class="fr" style="line-height:40px">共有数据：count 条</span>
                 </div>
-                <table class="layui-hide layui-table-cell" id="foodList" lay-filter="searchResult"></table>
+                <table class="layui-hide" id="foodList"></table>
+                <%--<table class="layui-table" lay-data="{ url:'list.do', page:true, id:'test'}" lay-filter="test">
+                    <thead>
+                    <tr>
+                        <th lay-data="{type:checkbox}"><input type="checkbox"></th>
+                        <th lay-data="{field:'fdImg', sort: true}">图片</th>
+                        <th lay-data="{field:'fdName'}">菜品名称</th>
+                        <th lay-data="{field:'fdPrice', sort: true}">价格</th>
+                        <th lay-data="{field:'fdMprice', sort: true}">会员价</th>
+                        <th lay-data="{field:'fdRecommend'}">推荐</th>
+                        <th lay-data="{field:'fdStock', sort: true}">库存</th>
+                        <th lay-data="{field:'fdStatus', sort: true}">状态</th>
+                        <th lay-data="{field:'fdUnit'}">单位</th>
+                        <th lay-data="{field:'fdRemark'}">简介</th>
+                    </tr>
+                    </thead>
+                </table>--%>
 
+
+                <script type="text/html" id="recommendTpl">
+                    <input type="checkbox" name="zzz" lay-skin="switch" lay-text="已推荐|未推荐" {{d.recommend}}>
+                </script>
+                <script type="text/html" id="topTpl">
+                    <input type="checkbox" name="show" lay-skin="switch" lay-text="已置顶|未置顶" {{d.top}}>
+                </script>
+                <script type="text/html" id="reviewTpl">
+                    <input type="checkbox" name="lock" value="10002" title="审核" lay-filter="lockDemo">
+                </script>
+                <script type="text/html" id="operateTpl">
+                    <a title="编辑" onclick="WeAdminEdit('编辑','./edit', 2, 600, 400)" href="javascript:;">
+                        <i class="layui-icon">&#xe642;</i>
+                    </a>
+                    <a title="查看" onclick="WeAdminShow('查看文章','./show',600,400)" href="javascript:;">
+                        <i class="layui-icon">&#xe63c;</i>
+                    </a>
+                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                        <i class="layui-icon">&#xe640;</i>
+                    </a>
+                </script>
             </div>
         </div>
-        <div class="layui-tab-item">
-            <table class="layui-table layui-table-cell" id="foodList2" lay-filter="searchResult">
-                <tr>
-                    <td>姓名</td>
-                    <td>分数</td>
-                </tr>
-                <tr>
-                    <td>Peter</td>
-                    <td>98</td>
-                </tr>
-                <tr>
-                    <td>Jack</td>
-                    <td>88</td>
-                </tr>
-            </table>
-        </div>
+        <div class="layui-tab-item">内容2</div>
         <div class="layui-tab-item">内容3</div>
     </div>
 </div>
 
 </body>
-<script type="text/html" id="imgTpl">
-    <img src="{{ d.fdImg}}" style="height: 100%">
-</script>
-<script type="text/html" id="recommendTpl">
-    <form class="layui-form">
-        <input id="fdRecommend" lay-filter="fdRecommend" type="checkbox" name="fdRecommend" value="{{d.fdId}}"
-               lay-skin="switch" lay-text="已推荐|未推荐" class="recommend" {{d.fdRecommend==1?"checked":""}}>
-    </form>
-    <input type="hidden" id="fdId" name="fdId" value="{{d.fdId}}"/>
-</script>
-<script type="text/html" id="statusTpl">
-    <form class="layui-form">
-        <input id="fdStatus" type="checkbox" lay-filter="fdStatus" name="fdStatus" value="{{d.fdId}}" lay-skin="switch"
-               lay-text="正常|已下架" {{d.fdStatus==1?"checked":""}}>
-    </form>
-</script>
-<script type="text/html" id="operateTpl">
-    <a title="编辑" onclick="WeAdminEdit('编辑','./edit', this, 600, 400)" href="javascript:;">
-        <i class="layui-icon">&#xe642;</i>
-    </a>
-    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-        <i class="layui-icon">&#xe640;</i>
-    </a>
-</script>
 
 </html>

@@ -110,9 +110,6 @@
                 <if test="f.fdRecommend != null and f.fdRecommend != ''">
                     AND fd_recommend = #{f.fdRecommend,jdbcType=INTEGER}
                 </if>
-                <if test="f.shopId != null and f.shopId != ''">
-                    AND shop_id = #{f.shopId,jdbcType=INTEGER}
-                </if>
             </if>
         </where>
     </sql>
@@ -156,26 +153,6 @@
         from Food
         where fd_id = #{fdId,jdbcType=INTEGER}
     </select>
-
-    <delete id="deleteByIds">
-        DELETE FROM Food
-        WHERE fd_id IN
-        <foreach collection="list" item="id" index="index"
-                 open="(" close=")" separator=",">
-            #{id}
-        </foreach>
-    </delete>
-
-    <update id="setRecommendByIds">
-        UPDATE Food
-        SET  fd_recommend = 1
-        WHERE fd_id IN
-        <foreach collection="list" item="id" index="index"
-                 open="(" close=")" separator=",">
-            #{id}
-        </foreach>
-    </update>
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--
           WARNING - @mbg.generated
@@ -380,59 +357,41 @@
         -->
         update Food
         <set>
-            <if test="fdName != null and fdName != ''">
+            <if test="fdName != null">
                 fd_name = #{fdName,jdbcType=VARCHAR},
             </if>
-            <if test="ftId != null and ftId != ''">
+            <if test="ftId != null">
                 ft_id = #{ftId,jdbcType=INTEGER},
             </if>
-            <if test="fdPrice != null and fdPrice != ''">
+            <if test="fdPrice != null">
                 fd_price = #{fdPrice,jdbcType=DOUBLE},
             </if>
-            <if test="fdMprice != null and fdMprice != ''">
+            <if test="fdMprice != null">
                 fd_mprice = #{fdMprice,jdbcType=DOUBLE},
             </if>
-            <if test="fdStock != null and fdStock != ''">
+            <if test="fdStock != null">
                 fd_stock = #{fdStock,jdbcType=INTEGER},
             </if>
-            <if test="fdStatus != null and fdStatus != ''">
+            <if test="fdStatus != null">
                 fd_status = #{fdStatus,jdbcType=INTEGER},
             </if>
-            <if test="fdUnit != null and fdUnit != ''">
+            <if test="fdUnit != null">
                 fd_unit = #{fdUnit,jdbcType=VARCHAR},
             </if>
             <if test="fdRemark != null">
                 fd_remark = #{fdRemark,jdbcType=VARCHAR},
             </if>
-            <if test="fdImg != null and fdImg != ''">
+            <if test="fdImg != null">
                 fd_img = #{fdImg,jdbcType=VARCHAR},
             </if>
-            <if test="shopId != null and shopId != ''">
+            <if test="shopId != null">
                 shop_id = #{shopId,jdbcType=VARCHAR},
             </if>
-            <if test="fdRecommend != null and fdRecommend != ''">
+            <if test="fdRecommend != null">
                 fd_recommend = #{fdRecommend,jdbcType=INTEGER},
             </if>
-
         </set>
         where fd_id = #{fdId,jdbcType=INTEGER}
-    </update>
-
-    <update id="updateByPrimaryKeysSelective">
-        UPDATE Food
-        <set>
-            <if test="f.fdRecommend != null and f.fdRecommend != ''">
-                fd_recommend = #{f.fdRecommend,jdbcType=INTEGER},
-            </if>
-            <if test="f.fdStatus != null and f.fdStatus != ''">
-                fd_status = #{f.fdStatus,jdbcType=INTEGER},
-            </if>
-        </set>
-        WHERE fd_id IN
-        <foreach collection="ids" item="id" index="index"
-                 open="(" close=")" separator=",">
-            #{id}
-        </foreach>
     </update>
     <update id="updateByPrimaryKey" parameterType="cn.yutang.backend.pojo.po.Food">
         <!--
